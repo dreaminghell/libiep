@@ -202,6 +202,9 @@ typedef struct IEP_MSG {
     uint8_t dein_ei_sel;
     uint8_t dein_ei_radius;//when dein_ei_sel=0 will be used
 
+    uint8_t dil_mtn_tbl_en;
+    uint32_t dil_mtn_tbl[8];
+
     uint8_t vir_addr_enable;
 
     void *base;

@@ -91,6 +91,8 @@ typedef struct iep_param_yuv_deinterlace {
     uint8_t                     dil_ei_smooth;      // deinterlace edge interpolation for smooth effect 0: disable, 1: enable
     uint8_t                     dil_ei_sel;         // deinterlace edge interpolation select
     uint8_t                     dil_ei_radius;      // deinterlace edge interpolation radius [0, 3]
+    uint8_t                     dil_mtn_tbl_en;
+    uint32_t                    dil_mtn_tbl[8];
 } iep_param_yuv_deinterlace_t;
 
 typedef enum IEP_COLOR_CONVERT_MODE {

@@ -330,7 +330,7 @@ int iep_api::config_color_enh(iep_param_RGB_color_enhance_t *rgb_enh)
         msg->rgb_enh_coe = (unsigned int)(rgb_enh->rgb_enh_coe * 32);
         msg->rgb_contrast_enhance_mode = rgb_enh->rgb_contrast_enhance_mode;
         msg->rgb_cg_en = rgb_enh->rgb_cg_en;
-	msg->rgb_enhance_mode = rgb_enh->rgb_enhance_mode;
+        msg->rgb_enhance_mode = rgb_enh->rgb_enhance_mode;
 
         msg->enh_threshold = rgb_enh->enh_threshold;
         msg->enh_alpha     =
@@ -510,6 +510,7 @@ int iep_api::config_yuv_deinterlace()
     msg->dein_ei_radius      = 0;
     msg->dein_ei_smooth      = 0;
     msg->dein_high_fre_fct   = 0;
+    msg->dil_mtn_tbl_en      = 0;
 
     return 0;
 }
@@ -517,6 +518,7 @@ int iep_api::config_yuv_deinterlace()
 int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil)
 {
     do {
+        int i;
         if (yuv_dil == NULL) {
             break;
         }
@@ -529,6 +531,10 @@ int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil)
         msg->dein_ei_radius      = yuv_dil->dil_ei_radius;
         msg->dein_ei_smooth      = yuv_dil->dil_ei_smooth;
         msg->dein_high_fre_fct   = yuv_dil->dil_high_freq_fct;
+        msg->dil_mtn_tbl_en      = yuv_dil->dil_mtn_tbl_en;
+
+        for (i = 0; i < 8; ++i)
+             msg->dil_mtn_tbl[i] = yuv_dil->dil_mtn_tbl[i];
 
         return 0;
     }
@@ -570,6 +576,8 @@ int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil,
                                     iep_img *src1, iep_img *dst1)
 {
     do {
+        int i;
+
         if (0 > deinterlace_sanity_check(yuv_dil, src1, dst1)) {
             break;
         }
@@ -582,6 +590,10 @@ int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil,
         msg->dein_ei_radius      = yuv_dil->dil_ei_radius;
         msg->dein_ei_smooth      = yuv_dil->dil_ei_smooth;
         msg->dein_high_fre_fct   = yuv_dil->dil_high_freq_fct;
+        msg->dil_mtn_tbl_en      = yuv_dil->dil_mtn_tbl_en;
+
+        for (i = 0; i < 8; ++i)
+             msg->dil_mtn_tbl[i] = yuv_dil->dil_mtn_tbl[i];
 
         if (src1 != NULL) {
             memcpy(&msg->src1, src1, sizeof(iep_img));
