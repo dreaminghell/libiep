@@ -21,6 +21,10 @@ struct IEP_CAP {
     uint8_t max_enhance_radius;
 };
 
+struct iep_dil_mtn_tbl {
+    uint32_t dil_mtn_tbl[8];
+};
+
 #define IEP_IOC_MAGIC 'i'
 
 #define IEP_SET_PARAMETER_REQ _IOW(IEP_IOC_MAGIC, 1, unsigned long)
@@ -34,6 +38,7 @@ struct IEP_CAP {
 #define IEP_RELEASE_CURRENT_TASK _IOW(IEP_IOC_MAGIC, 9, unsigned long)
 #define IEP_GET_IOMMU_STATE _IOR(IEP_IOC_MAGIC,10, unsigned long)
 #define IEP_QUERY_CAP _IOR(IEP_IOC_MAGIC, 11, struct IEP_CAP)
+#define IEP_SET_DIL_MTN_TBL _IOW(IEP_IOC_MAGIC, 12, struct iep_dil_mtn_tbl)
 
 enum {
     yuv2rgb_BT_601_l            = 0x0,     /* BT.601_1 */
@@ -201,9 +206,6 @@ typedef struct IEP_MSG {
     uint8_t dein_ei_smooth;
     uint8_t dein_ei_sel;
     uint8_t dein_ei_radius;//when dein_ei_sel=0 will be used
-
-    uint8_t dil_mtn_tbl_en;
-    uint32_t dil_mtn_tbl[8];
 
     uint8_t vir_addr_enable;
 

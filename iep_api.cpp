@@ -510,7 +510,6 @@ int iep_api::config_yuv_deinterlace()
     msg->dein_ei_radius      = 0;
     msg->dein_ei_smooth      = 0;
     msg->dein_high_fre_fct   = 0;
-    msg->dil_mtn_tbl_en      = 0;
 
     return 0;
 }
@@ -518,6 +517,7 @@ int iep_api::config_yuv_deinterlace()
 int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil)
 {
     do {
+	struct iep_dil_mtn_tbl tbl;
         int i;
         if (yuv_dil == NULL) {
             break;
@@ -531,10 +531,14 @@ int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil)
         msg->dein_ei_radius      = yuv_dil->dil_ei_radius;
         msg->dein_ei_smooth      = yuv_dil->dil_ei_smooth;
         msg->dein_high_fre_fct   = yuv_dil->dil_high_freq_fct;
-        msg->dil_mtn_tbl_en      = yuv_dil->dil_mtn_tbl_en;
 
         for (i = 0; i < 8; ++i)
-             msg->dil_mtn_tbl[i] = yuv_dil->dil_mtn_tbl[i];
+             tbl.dil_mtn_tbl[i] = yuv_dil->dil_mtn_tbl[i];
+
+        if (0 > ioctl(fd, IEP_SET_DIL_MTN_TBL, &tbl)) {
+            IEP_ERR("ioctl IEP_SET_DIL_MTN_TBL failure\n");
+            break;
+        }
 
         return 0;
     }
@@ -577,6 +581,7 @@ int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil,
 {
     do {
         int i;
+	struct iep_dil_mtn_tbl tbl;
 
         if (0 > deinterlace_sanity_check(yuv_dil, src1, dst1)) {
             break;
@@ -590,10 +595,14 @@ int iep_api::config_yuv_deinterlace(iep_param_yuv_deinterlace_t *yuv_dil,
         msg->dein_ei_radius      = yuv_dil->dil_ei_radius;
         msg->dein_ei_smooth      = yuv_dil->dil_ei_smooth;
         msg->dein_high_fre_fct   = yuv_dil->dil_high_freq_fct;
-        msg->dil_mtn_tbl_en      = yuv_dil->dil_mtn_tbl_en;
 
         for (i = 0; i < 8; ++i)
-             msg->dil_mtn_tbl[i] = yuv_dil->dil_mtn_tbl[i];
+             tbl.dil_mtn_tbl[i] = yuv_dil->dil_mtn_tbl[i];
+
+        if (0 > ioctl(fd, IEP_SET_DIL_MTN_TBL, &tbl)) {
+            IEP_ERR("ioctl IEP_SET_DIL_MTN_TBL failure\n");
+            break;
+        }
 
         if (src1 != NULL) {
             memcpy(&msg->src1, src1, sizeof(iep_img));
